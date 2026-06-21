@@ -5,15 +5,16 @@ app = Flask(__name__)
 
 @app.route("/emotionDetector", methods=["GET"])
 def detect():
+
     text = request.args.get("textToAnalyze")
 
     if not text or text.strip() == "":
-        return "Invalid input! Try again.", 400
+        return "Invalid input! Please try again.", 400
 
     result, status = emotion_detector(text)
 
     if status != 200:
-        return "Error processing request", status
+        return "Error processing request.", status
 
     response = (
         f"For the given statement, the system response is "
