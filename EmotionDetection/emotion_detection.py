@@ -1,5 +1,4 @@
 import requests
-import json
 
 def emotion_detector(text_to_analyze):
 
@@ -35,7 +34,7 @@ def emotion_detector(text_to_analyze):
 
         response.raise_for_status()
 
-        formatted_response = json.loads(response.text)
+        formatted_response = response.json()
 
         emotions = formatted_response['emotionPredictions'][0]['emotion']
 

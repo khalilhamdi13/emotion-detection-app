@@ -1,25 +1,31 @@
-"""
-Flask server for Emotion Detection Application
-"""
-
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from EmotionDetection import emotion_detector
 
 app = Flask(__name__)
 
-
 @app.route("/emotionDetector", methods=["GET"])
 def detect():
-    """
-    API endpoint to detect emotions from input text
-    """
     text = request.args.get("textToAnalyze")
 
     if not text or text.strip() == "":
-        return "Invalid input", 400
+        return "Invalid input! Try again.", 400
 
     result, status = emotion_detector(text)
-    return jsonify(result), status
+
+    if status != 200:
+        return "Error processing request", status
+
+    response = (
+        f"For the given statement, the system response is "
+        f"'anger': {result['anger']}, "
+        f"'disgust': {result['disgust']}, "
+        f"'fear': {result['fear']}, "
+        f"'joy': {result['joy']}, "
+        f"'sadness': {result['sadness']}. "
+        f"The dominant emotion is {result['dominant_emotion']}."
+    )
+
+    return response, 200
 
 
 if __name__ == "__main__":
